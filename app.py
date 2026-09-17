@@ -69,7 +69,7 @@ if st.session_state.selected_movie:
     col1, col2 = st.columns([1, 2])
     with col1:
         if movie.get('img_link'):
-            st.image(movie.get('img_link'), use_column_width=True)
+            st.image(movie.get('img_link'), use_container_width=True)
         else:
             st.info("No poster available")
             
@@ -110,7 +110,7 @@ def display_movie_result(idx, doc, rrf_score, tab_key):
         
         with col1:
             if doc.get('img_link'):
-                st.image(doc.get('img_link'), use_column_width=True)
+                st.image(doc.get('img_link'), use_container_width=True)
             else:
                 st.caption("No image")
                 
