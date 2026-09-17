@@ -130,6 +130,9 @@ def display_movie_result(idx, doc, rrf_score, tab_key):
 
 # --- Tab 1: Search Mode ---
 with tab1:
+    if "search_results" not in st.session_state:
+        st.session_state.search_results = None
+        
     col_input, col_btn = st.columns([4, 1])
     with col_input:
         search_query = st.text_input("Search query", placeholder="e.g., a lonely astronaut trying to survive", label_visibility="collapsed")
@@ -138,8 +141,10 @@ with tab1:
         
     if search_btn and search_query:
         with st.spinner("🔍 Searching..."):
-            results = search_engine.rrf_search(query=search_query, k=60, limit=5)
+            st.session_state.search_results = search_engine.rrf_search(query=search_query, k=60, limit=5)
         
+    if st.session_state.search_results is not None:
+        results = st.session_state.search_results
         if results:
             st.success(f"Found {len(results)} matches!")
             for idx, result in enumerate(results, 1):
@@ -149,6 +154,10 @@ with tab1:
 
 # --- Tab 2: Ask Mode ---
 with tab2:
+    if "ask_results" not in st.session_state:
+        st.session_state.ask_results = None
+        st.session_state.ask_answer = None
+
     col_input, col_btn = st.columns([4, 1])
     with col_input:
         ask_query = st.text_input("Ask for a recommendation", placeholder="e.g., What should I watch if I like mind-bending thrillers?", label_visibility="collapsed")
@@ -184,12 +193,20 @@ Answer:"""
                                 {"role": "user", "content": prompt},
                             ],
                         )
-                        st.info(response.choices[0].message.content)
-                        
-                        st.markdown("### 📚 Source Movies")
-                        for idx, res in enumerate(results, 1):
-                            display_movie_result(idx, res['document'], res.get('rrf_score', 0), "ask")
+                        st.session_state.ask_answer = response.choices[0].message.content
+                        st.session_state.ask_results = results
                     except Exception as e:
                         st.error(f"Error generating answer: {e}")
             else:
-                st.info("No relevant movies found.")
+                st.session_state.ask_results = []
+                st.session_state.ask_answer = None
+
+    if st.session_state.ask_results is not None:
+        if st.session_state.ask_results:
+            st.info(st.session_state.ask_answer)
+            
+            st.markdown("### 📚 Source Movies")
+            for idx, res in enumerate(st.session_state.ask_results, 1):
+                display_movie_result(idx, res['document'], res.get('rrf_score', 0), "ask")
+        else:
+            st.info("No relevant movies found.")
