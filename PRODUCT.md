@@ -58,3 +58,10 @@ Visitors use a hosted Streamlit demo and may continue to the GitHub repository a
 ## Accessibility & Inclusion
 
 The demo must be keyboard usable, maintain readable contrast, avoid color-only relevance indicators, expose meaningful loading and error text, and remain usable on laptop and mobile widths.
+
+## Showcase Plan
+
+The primary demonstration vehicle is a **plain Streamlit showcase** (the preferred plan). This UI will provide:
+1. **Search Mode**: A simple search bar querying the local lexical and semantic index.
+2. **Ask Mode**: A conversational UI generating answers from OpenRouter while showing retrieved sources.
+3. **Reference Links**: Direct access to the code and the technical walkthrough in [blog.md](blog.md).
