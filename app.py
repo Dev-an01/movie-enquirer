@@ -118,12 +118,23 @@ else:
 tab1, tab2 = st.tabs(["🔍 Search Mode", "💬 Ask AI Mode"])
 
 # --- Helper Function for Results ---
-def display_movie_card(idx, title, desc, rrf_score):
+def display_movie_card(idx, title, desc, rrf_score, img_link=""):
+    img_html = ""
+    if img_link:
+        img_html = f'''
+        <div style="flex-shrink: 0; width: 120px;">
+            <img src="{img_link}" style="width: 100%; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" alt="Poster for {title}" onerror="this.style.display='none'">
+        </div>
+        '''
+        
     st.markdown(f"""
-    <div class="movie-card">
-        <div class="movie-title">#{idx} {title}</div>
-        <div class="movie-score">✨ Relevance Score: {rrf_score:.4f}</div>
-        <div class="movie-desc">{desc}</div>
+    <div class="movie-card" style="display: flex; gap: 1.5rem; align-items: start;">
+        {img_html}
+        <div>
+            <div class="movie-title">#{idx} {title}</div>
+            <div class="movie-score">✨ Relevance Score: {rrf_score:.4f}</div>
+            <div class="movie-desc">{desc}</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -145,7 +156,13 @@ with tab1:
             st.success(f"Found {len(results)} great matches for you!")
             for idx, result in enumerate(results, 1):
                 doc = result['document']
-                display_movie_card(idx, doc.get('title', 'Unknown Title'), doc.get('description', 'No description available.'), result.get('rrf_score', 0))
+                display_movie_card(
+                    idx, 
+                    doc.get('title', 'Unknown Title'), 
+                    doc.get('description', 'No description available.'), 
+                    result.get('rrf_score', 0),
+                    doc.get('img_link', '')
+                )
         else:
             st.info("No results found. Try a different query.")
 
@@ -200,7 +217,13 @@ Answer:"""
                         st.markdown("### 📚 Source Movies")
                         for idx, res in enumerate(results, 1):
                             doc = res['document']
-                            display_movie_card(idx, doc.get('title', 'Unknown'), doc.get('description', 'No description.'), res.get('rrf_score', 0))
+                            display_movie_card(
+                                idx, 
+                                doc.get('title', 'Unknown'), 
+                                doc.get('description', 'No description.'), 
+                                res.get('rrf_score', 0),
+                                doc.get('img_link', '')
+                            )
                     except Exception as e:
                         st.error(f"Error generating answer: {e}")
             else:
