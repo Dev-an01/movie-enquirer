@@ -99,7 +99,7 @@ class ChunkedSemanticSearch(SemanticSearch):
             for i in range(len(chunks)):
                 chunk_list.append(chunks[i])
                 chunk_metadata.append({'movie_idx': doc['id'], 'chunk_idx': i, 'total_chunks': len(chunks)})
-        self.chunk_embeddings = self.model.encode(chunk_list, show_progress_bar=True)
+        self.chunk_embeddings = self.model.encode(chunk_list, show_progress_bar=True).astype(np.float16)
         self.chunk_metadata = chunk_metadata
         with open("cache/chunk_embeddings.npy", "wb") as f:
             np.save(f, self.chunk_embeddings)

@@ -15,8 +15,6 @@ wheels/
 #environment variables
 .env
 .gstack/
-cache/
 .DS_Store
-graphify-out/
 .impeccable/
 
