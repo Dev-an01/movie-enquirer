@@ -4,7 +4,7 @@ A learning project that builds a movie search and Retrieval-Augmented Generation
 
 The project searches 5,000 movie records with keyword search, BM25, dense embeddings, semantic chunking, and hybrid ranking. It can then pass the retrieved movies to an LLM through OpenRouter to produce grounded recommendations, summaries, citations, and answers.
 
-> This repository is currently a command-line learning project. A simple demo UI and hosting path are planned, but not implemented yet.
+> **Live Demo:** Try the deployed Streamlit app here: [https://movie-enquirer-byanand.streamlit.app/](https://movie-enquirer-byanand.streamlit.app/)
 
 ## What this project demonstrates
 
@@ -302,9 +302,9 @@ If you are using the repository to learn RAG, follow the code in this order:
 
 For the longer explanation, read [blog.md](blog.md).
 
-## Demo UI and hosting plan
-
-This is a plan only. No UI or deployment files have been added yet.
+## Demo UI and deployment
+ 
+The UI is implemented as a Streamlit application in `app.py` and is currently deployed on Streamlit Community Cloud.
 
 ### Recommended first version
 
